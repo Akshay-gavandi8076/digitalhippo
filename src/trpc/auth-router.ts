@@ -11,7 +11,7 @@ export const authRouter = router({
       const { email, password } = input
       const payload = await getPayloadClient()
 
-      // Check if user already exist
+      // check if user already exists
       const { docs: users } = await payload.find({
         collection: 'users',
         where: {
@@ -42,12 +42,12 @@ export const authRouter = router({
 
       const payload = await getPayloadClient()
 
-      const isVerfied = await payload.verifyEmail({
+      const isVerified = await payload.verifyEmail({
         collection: 'users',
         token,
       })
 
-      if (!isVerfied) throw new TRPCError({ code: 'UNAUTHORIZED' })
+      if (!isVerified) throw new TRPCError({ code: 'UNAUTHORIZED' })
 
       return { success: true }
     }),

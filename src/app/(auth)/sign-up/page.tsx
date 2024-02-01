@@ -5,10 +5,11 @@ import { Button, buttonVariants } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+
 import {
   AuthCredentialsValidator,
   TAuthCredentialsValidator,
@@ -32,7 +33,7 @@ const Page = () => {
   const { mutate, isLoading } = trpc.auth.createPayloadUser.useMutation({
     onError: (err) => {
       if (err.data?.code === 'CONFLICT') {
-        toast.error('This email is already is use. Sign in instead?')
+        toast.error('This email is already in use. Sign in instead?')
 
         return
       }
@@ -45,7 +46,6 @@ const Page = () => {
 
       toast.error('Something went wrong. Please try again.')
     },
-
     onSuccess: ({ sentToEmail }) => {
       toast.success(`Verification email sent to ${sentToEmail}.`)
       router.push('/verify-email?to=' + sentToEmail)
@@ -60,15 +60,18 @@ const Page = () => {
     <>
       <div className='container relative flex pt-20 flex-col items-center justify-center lg:px-0'>
         <div className='mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]'>
-          <div className='flex flex-col items-center spaace-y-2 text-center'>
+          <div className='flex flex-col items-center space-y-2 text-center'>
             <Icons.logo className='h-20 w-20' />
-            <h1 className='text-2xl font-bold'>Create an account</h1>
+            <h1 className='text-2xl font-semibold tracking-tight'>
+              Create an account
+            </h1>
+
             <Link
-              href='/sign-in'
               className={buttonVariants({
                 variant: 'link',
                 className: 'gap-1.5',
               })}
+              href='/sign-in'
             >
               Already have an account? Sign-in
               <ArrowRight className='h-4 w-4' />
